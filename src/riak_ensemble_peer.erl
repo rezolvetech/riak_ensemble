@@ -1802,10 +1802,7 @@ get_value(Obj, Default, State) ->
 -spec init([any(),...]) -> {ok, setup, state()}.
 init([Mod, Ensemble, Id, Args]) ->
     ?OUT("~p: starting~n", [Id]),
-    {A,B,C} = os:timestamp(),
-    _ = random:seed(A + erlang:phash2(Id),
-                    B + erlang:phash2(node()),
-                    C),
+    _ = riak_ensemble_util:random_seed(Id),
     ETS = ets:new(x, [public, {read_concurrency, true}, {write_concurrency, true}]),
     TreeTrust = case riak_ensemble_config:tree_validation() of
                     false ->
